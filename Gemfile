@@ -15,9 +15,9 @@ gem "rack", ">= 2.0.0"
 gem "rackup", ">= 2.1.0"
 
 gem "activesupport"
-gem "debug"
+# gem "debug"
 gem "rake", "~> 13.0"
-gem "sorbet-static-and-runtime"
+# gem "sorbet-static-and-runtime"
 
 group :test do
   gem "faraday", ">= 2.0"
