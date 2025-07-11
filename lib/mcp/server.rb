@@ -97,14 +97,17 @@ module MCP
     end
 
     def define_tool(name: nil, title: nil, description: nil, input_schema: nil, annotations: nil, meta: nil, &block)
-      tool = Tool.define(name:, title:, description:, input_schema:, annotations:, meta:, &block)
+      tool = Tool.define(
+        name: name, title: title, description: description, input_schema: input_schema, annotations: annotations, meta: meta,
+        &block
+      )
       @tools[tool.name_value] = tool
 
       validate!
     end
 
     def define_prompt(name: nil, title: nil, description: nil, arguments: [], &block)
-      prompt = Prompt.define(name:, title:, description:, arguments:, &block)
+      prompt = Prompt.define(name: name, title: title, description: description, arguments: arguments, &block)
       @prompts[prompt.name_value] = prompt
     end
 
@@ -237,9 +240,9 @@ module MCP
 
     def server_info
       @server_info ||= {
-        name:,
-        title:,
-        version:,
+        name: name,
+        title: title,
+        version: version,
       }.compact
     end
 
@@ -265,7 +268,7 @@ module MCP
       end
 
       arguments = request[:arguments] || {}
-      add_instrumentation_data(tool_name:)
+      add_instrumentation_data(tool_name: tool_name)
 
       if tool.input_schema&.missing_required_arguments?(arguments)
         add_instrumentation_data(error: :missing_required_arguments)
@@ -304,7 +307,7 @@ module MCP
         raise RequestHandlerError.new("Prompt not found #{prompt_name}", request, error_type: :prompt_not_found)
       end
 
-      add_instrumentation_data(prompt_name:)
+      add_instrumentation_data(prompt_name: prompt_name)
 
       prompt_args = request[:arguments]
       prompt.validate_arguments!(prompt_args)

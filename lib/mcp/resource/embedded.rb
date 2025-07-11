@@ -6,11 +6,12 @@ module MCP
       attr_reader :resource, :annotations
 
       def initialize(resource:, annotations: nil)
+        @resource = resource
         @annotations = annotations
       end
 
       def to_h
-        { resource: resource.to_h, annotations: }.compact
+        { resource: resource.to_h, annotations: annotations }.compact
       end
     end
   end

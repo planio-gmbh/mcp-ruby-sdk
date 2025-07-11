@@ -76,7 +76,7 @@ module MCP
         prompts: [@prompt],
         resources: [@resource],
         resource_templates: [@resource_template],
-        configuration:,
+        configuration: configuration,
       )
     end
 
@@ -238,7 +238,7 @@ module MCP
       tool_args = { arg: "value" }
       tool_response = Tool::Response.new([{ result: "success" }])
 
-      @tool.expects(:call).with(arg: "value", server_context: nil).returns(tool_response)
+      @tool.expects(:call).with(arg: "value").returns(tool_response)
 
       request = {
         jsonrpc: "2.0",
@@ -252,7 +252,7 @@ module MCP
 
       response = @server.handle(request)
       assert_equal tool_response.to_h, response[:result]
-      assert_instrumentation_data({ method: "tools/call", tool_name: })
+      assert_instrumentation_data({ method: "tools/call", tool_name: tool_name })
     end
 
     test "#handle tools/call returns error if required tool arguments are missing" do
@@ -288,7 +288,7 @@ module MCP
       tool_args = { arg: "value" }
       tool_response = Tool::Response.new([{ result: "success" }])
 
-      @tool.expects(:call).with(arg: "value", server_context: nil).returns(tool_response)
+      @tool.expects(:call).with(arg: "value").returns(tool_response)
 
       request = JSON.generate({
         jsonrpc: "2.0",
@@ -300,10 +300,11 @@ module MCP
       raw_response = @server.handle_json(request)
       response = JSON.parse(raw_response, symbolize_names: true) if raw_response
       assert_equal tool_response.to_h, response[:result] if response
-      assert_instrumentation_data({ method: "tools/call", tool_name: })
+      assert_instrumentation_data({ method: "tools/call", tool_name: tool_name })
     end
 
     test "#handle_json tools/call executes tool and returns result, when the tool is typed with Sorbet" do
+      skip "Sorbet is not available" unless defined?(T)
       class TypedTestTool < Tool
         tool_name "test_tool"
         description "a test tool for testing"
@@ -756,7 +757,7 @@ module MCP
       configuration.instrumentation_callback = local_callback
       configuration.exception_reporter = local_exception_reporter
 
-      server = Server.new(name: "test_server", configuration:)
+      server = Server.new(name: "test_server", configuration: configuration)
 
       assert_equal local_callback, server.configuration.instrumentation_callback
       assert_equal local_exception_reporter, server.configuration.exception_reporter

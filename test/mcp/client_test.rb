@@ -18,7 +18,12 @@ module MCP
 
       # Only checking for the essential parts of the request
       transport.expects(:send_request).with do |args|
-        args in { request: { method: "tools/list", jsonrpc: "2.0" } }
+        case args
+        in { request: { method: "tools/list", jsonrpc: "2.0" } }
+          true
+        else
+          false
+        end
       end.returns(mock_response).once
 
       client = Client.new(transport: transport)
@@ -35,7 +40,12 @@ module MCP
 
       # Only checking for the essential parts of the request
       transport.expects(:send_request).with do |args|
-        args in { request: { method: "tools/list", jsonrpc: "2.0" } }
+        case args
+        in { request: { method: "tools/list", jsonrpc: "2.0" } }
+          true
+        else
+          false
+        end
       end.returns(mock_response).once
 
       client = Client.new(transport: transport)
@@ -54,7 +64,8 @@ module MCP
 
       # Only checking for the essential parts of the request
       transport.expects(:send_request).with do |args|
-        args in {
+        case args
+        in {
           request: {
             method: "tools/call",
             jsonrpc: "2.0",
@@ -64,6 +75,10 @@ module MCP
             },
           },
         }
+          true
+        else
+          false
+        end
       end.returns(mock_response).once
 
       client = Client.new(transport: transport)
@@ -86,7 +101,12 @@ module MCP
 
       # Only checking for the essential parts of the request
       transport.expects(:send_request).with do |args|
-        args in { request: { method: "resources/list", jsonrpc: "2.0" } }
+        case args
+        in { request: { method: "resources/list", jsonrpc: "2.0" } }
+          true
+        else
+          false
+        end
       end.returns(mock_response).once
 
       client = Client.new(transport: transport)
@@ -124,7 +144,8 @@ module MCP
 
       # Only checking for the essential parts of the request
       transport.expects(:send_request).with do |args|
-        args in {
+        case args
+        in {
           request: {
             method: "resources/read",
             jsonrpc: "2.0",
@@ -133,6 +154,10 @@ module MCP
             },
           },
         }
+          true
+        else
+          false
+        end
       end.returns(mock_response).once
 
       client = Client.new(transport: transport)

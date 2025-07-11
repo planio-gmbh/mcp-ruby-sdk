@@ -233,6 +233,7 @@ module MCP
     end
 
     test "#call with Sorbet typed tools invokes the tool block and returns the response" do
+      skip "Sorbet is not available" unless defined?(T)
       class TypedTestTool < Tool
         tool_name "test_tool"
         description "a test tool for testing"
