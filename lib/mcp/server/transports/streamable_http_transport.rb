@@ -34,10 +34,10 @@ module MCP
           end
         end
 
-        def send_notification(method, params = nil, session_id: nil)
+        def send_notification(method, params: nil, session_id: nil)
           notification = {
             jsonrpc: "2.0",
-            method:,
+            method: method,
           }
           notification[:params] = params if params
 

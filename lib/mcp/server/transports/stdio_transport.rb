@@ -38,7 +38,7 @@ module MCP
           $stdout.flush
         end
 
-        def send_notification(method, params = nil)
+        def send_notification(method, params: nil)
           notification = {
             jsonrpc: "2.0",
             method: method,

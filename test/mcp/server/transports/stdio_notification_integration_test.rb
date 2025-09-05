@@ -100,7 +100,7 @@ module MCP
 
         test "notifications include params when provided" do
           # Test the transport's send_notification directly with params
-          result = @transport.send_notification("test/notification", { data: "test_value" })
+          result = @transport.send_notification("test/notification", params: { data: "test_value" })
 
           assert result
           assert_equal 1, @mock_stdout.output.size
